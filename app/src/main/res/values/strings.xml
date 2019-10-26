@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name1">中达货架</string>
+    <string name="preferenceCache">huojiaCache</string>
+
+    <string name="error_data">数据解析错误</string>
+    <string name="error_json">JSON数据解析错误</string>
+    <string name="error_fail">网络请求失败</string>
+    <string name="address_empty">请求地址为空</string>
+    <string name="empty_data">无数据</string>
+
+
+    <!--b版本更新dialog提示-->
+    <string name="update_latest">确认是否更新到最新版本</string>
+    <string name="update_older">确认是否退回到旧版本</string>
+
+    <!--登录-->
+    <string name="str_login">登录</string>
+    <string name="str_sweep">扫描二维码</string>
+    <string name="login_url">请扫描获取登录信息</string>
+    <string name="login_address_empty">未扫描到登录地址</string>
+    <string name="login_img_address_empty">未扫描到图片地址</string>
+
+    <string name="btn_yes">是</string>
+    <string name="btn_no">否</string>
+    <string name="btn_clear">清空</string>
+
+    <string name="title_input">采购入库单</string>
+
+    <string name="text_red">红冲</string>
+
+    <string name="hint_stock">请选择仓库</string>
+    <string name="hint_supplier">请选择供应商</string>
+    <string name="hint_code">请输入条码</string>
+
+    <string name="top_no_arrvied">未到货</string>
+
+    <string name="icon_man">&#xe71b;</string>
+    <string name="icon_lock">&#xe644;</string>
+</resources>
