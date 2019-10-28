@@ -1,4 +1,4 @@
-package com.yyy.huojia.barcode;
+package com.yyy.huojia.input;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.yyy.huojia.R;
+import com.yyy.huojia.input.model.BarCode;
 import com.yyy.huojia.interfaces.OnItemClickListener;
 import com.yyy.huojia.interfaces.OnItemLongClickListener;
 

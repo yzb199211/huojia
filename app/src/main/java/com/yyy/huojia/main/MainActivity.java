@@ -11,8 +11,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.yyy.huojia.R;
+import com.yyy.huojia.input.InputDetailActivity;
 import com.yyy.huojia.input.InputListActivity;
 import com.yyy.huojia.interfaces.OnItemClickListener;
+import com.yyy.huojia.output.OutputListActivity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -76,10 +78,10 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent();
         switch (id) {
             case 1:
-                startActivity(new Intent().setClass(MainActivity.this, InputListActivity.class));
+                startActivity(new Intent().setClass(MainActivity.this, InputDetailActivity.class));
                 break;
             case 2:
-
+                startActivity(new Intent().setClass(MainActivity.this, OutputListActivity.class));
                 break;
             case 3:
 

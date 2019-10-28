@@ -1,5 +1,6 @@
 package com.yyy.huojia.input;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -24,13 +25,12 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yyy.huojia.R;
-import com.yyy.huojia.barcode.BarCodeAdapter;
 import com.yyy.huojia.dialog.EditDialog;
 import com.yyy.huojia.dialog.JudgeDialog;
 import com.yyy.huojia.dialog.LoadingDialog;
 import com.yyy.huojia.interfaces.OnItemClickListener;
 import com.yyy.huojia.interfaces.ResponseListener;
-import com.yyy.huojia.barcode.BarCode;
+import com.yyy.huojia.input.model.BarCode;
 import com.yyy.huojia.model.Stock;
 import com.yyy.huojia.model.Supplier;
 import com.yyy.huojia.util.SharedPreferencesHelper;
@@ -83,6 +83,8 @@ public class InputDetailActivity extends AppCompatActivity {
     TextView tvTotalWeight;
     @BindView(R.id.tv_delete)
     TextView tvDelete;
+    @BindView(R.id.tv_save)
+    TextView tvSave;
 
     SharedPreferencesHelper preferencesHelper;
 
@@ -148,6 +150,7 @@ public class InputDetailActivity extends AppCompatActivity {
     private void initView() {
         tvTitle.setText(getString(R.string.title_input));
         tvRight.setText(getString(R.string.top_no_arrvied));
+        tvRight.setVisibility(View.VISIBLE);
         ivRight.setVisibility(View.GONE);
         tvTotalNum.setText("总卷数：0");
         tvTotalWeight.setText("总重量：0kg");
@@ -232,7 +235,8 @@ public class InputDetailActivity extends AppCompatActivity {
 
     private void judgeRecNo() {
         if (RecNo == 0) {
-            tvDelete.setVisibility(View.GONE);
+            tvDelete.setVisibility(View.INVISIBLE);
+            tvSave.setVisibility(View.INVISIBLE);
         } else {
             initData();
         }
@@ -374,6 +378,7 @@ public class InputDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.tv_right:
+                startActivity(new Intent().setClass(InputDetailActivity.this,InputNotArrivedActivity.class));
                 break;
             case R.id.tv_stock:
                 select_stock();
@@ -387,8 +392,12 @@ public class InputDetailActivity extends AppCompatActivity {
             case R.id.tv_delete:
                 break;
             case R.id.tv_save:
+                if (canSave()) {
+                    confirmSave();
+                }
                 break;
             case R.id.tv_submit:
+                confirmSubmit();
                 break;
             default:
                 break;
@@ -414,6 +423,16 @@ public class InputDetailActivity extends AppCompatActivity {
         codes.clear();
         barCodes.clear();
         refreshList();
+        isRed = !isRed;
+    }
+
+    private void clearAll() {
+        codes.clear();
+        barCodes.clear();
+        refreshList();
+        switchView.setChecked(false);
+        isRed = false;
+        RecNo = 0;
     }
 
     private void select_supplier() {
@@ -622,6 +641,158 @@ public class InputDetailActivity extends AppCompatActivity {
         return params;
     }
 
+    private boolean canSave() {
+        if (stockid == 0 || supplierid == 0) {
+            Toasts.showShort(this, "仓库和供应商不能为空");
+            return false;
+        }
+        return true;
+    }
+
+    JudgeDialog saveDialog;
+
+    private void confirmSave() {
+        if (saveDialog == null)
+            saveDialog = new JudgeDialog(this, R.style.JudgeDialog, "是否保存数据？", new JudgeDialog.OnCloseListener() {
+                @Override
+                public void onClick(boolean confirm) {
+                    if (confirm) {
+                        save(false);
+                    }
+                }
+            });
+        saveDialog.show();
+    }
+
+    private List<NetParams> getSaveParams() {
+        List<NetParams> params = new ArrayList<>();
+        params.add(new NetParams("otype", Otypes.InputSave));
+        params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
+        params.add(new NetParams("iBscDataCustomerRecNo", supplierid + ""));
+        params.add(new NetParams("sUserID", userid));
+        params.add(new NetParams("iMMStockInMRecNo", RecNo + ""));
+        params.add(new NetParams("iRed", switchView.isChecked() ? "1" : "0"));
+        params.add(new NetParams("sBarCodes", getBarcodes()));
+        return params;
+    }
+
+    private void save(boolean submit) {
+        LoadingDialog.showDialogForLoading(this);
+        new NetUtil(getSaveParams(), url, new ResponseListener() {
+            @Override
+            public void onSuccess(String string) {
+                try {
+                    JSONObject jsonObject = new JSONObject(string);
+                    if (jsonObject.optBoolean("success")) {
+                        FinishLoading(null);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (submit) {
+                                    try {
+                                        RecNo = jsonObject.optJSONArray("tables").optJSONArray(0).getJSONObject(0).optInt("iRecNo");
+                                        Log.e("no", jsonObject.optJSONArray("tables").optJSONArray(0).getJSONObject(0).optInt("iRecNo") + "");
+                                        submit();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        FinishLoading(getString(R.string.error_json));
+                                    }
+                                } else {
+                                    finish();
+                                }
+                            }
+                        });
+                    } else {
+                        FinishLoading(jsonObject.optString("message"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    FinishLoading(getString(R.string.error_json));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FinishLoading(getString(R.string.error_data));
+                }
+            }
+
+            @Override
+            public void onFail(IOException e) {
+                e.printStackTrace();
+                FinishLoading(e.getMessage());
+            }
+        });
+    }
+
+    private String getBarcodes() {
+        String barcode = "";
+        for (int i = 0; i < barCodes.size(); i++) {
+            if (i == 0) {
+                barcode = barcode + barCodes.get(i).getSBatchNo() + "," + barCodes.get(i).getFQty();
+            } else {
+                barcode = barcode + ";" + barCodes.get(i).getSBatchNo() + "," + barCodes.get(i).getFQty();
+            }
+        }
+        return barcode;
+    }
+
+    JudgeDialog submitDialog;
+
+    private void confirmSubmit() {
+        if (submitDialog == null)
+            submitDialog = new JudgeDialog(this, R.style.JudgeDialog, "是否提交数据？", new JudgeDialog.OnCloseListener() {
+                @Override
+                public void onClick(boolean confirm) {
+                    if (confirm) {
+                        save(true);
+                    }
+                }
+            });
+        submitDialog.show();
+    }
+
+
+    private List<NetParams> getSubmitParams() {
+        List<NetParams> params = new ArrayList<>();
+        params.add(new NetParams("otype", Otypes.InputSubmit));
+        params.add(new NetParams("iRecNo", RecNo + ""));
+        params.add(new NetParams("sUserID", userid));
+        return params;
+    }
+
+    private void submit() {
+        LoadingDialog.showDialogForLoading(this);
+        new NetUtil(getSubmitParams(), url, new ResponseListener() {
+            @Override
+            public void onSuccess(String string) {
+                try {
+                    JSONObject jsonObject = new JSONObject(string);
+                    if (jsonObject.optBoolean("success")) {
+                        FinishLoading("入库成功");
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                clearAll();
+                            }
+                        });
+                    } else {
+                        FinishLoading(jsonObject.optString("message"));
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    FinishLoading(getString(R.string.error_json));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    FinishLoading(getString(R.string.error_data));
+                }
+            }
+
+            @Override
+            public void onFail(IOException e) {
+                e.printStackTrace();
+                FinishLoading(e.getMessage());
+            }
+        });
+    }
+
     private void FinishLoading(@NonNull String msg) {
         runOnUiThread(new Runnable() {
             @Override
@@ -633,4 +804,5 @@ public class InputDetailActivity extends AppCompatActivity {
             }
         });
     }
+
 }

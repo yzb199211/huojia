@@ -1,4 +1,4 @@
-package com.yyy.huojia.barcode;
+package com.yyy.huojia.input.model;
 
 public class BarCode {
 

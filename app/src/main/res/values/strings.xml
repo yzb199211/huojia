@@ -25,6 +25,8 @@
     <string name="btn_clear">清空</string>
 
     <string name="title_input">采购入库单</string>
+    <string name="title_not_arrived">未到货明细</string>
+    <string name="title_output">物料领用单</string>
 
     <string name="text_red">红冲</string>
 
