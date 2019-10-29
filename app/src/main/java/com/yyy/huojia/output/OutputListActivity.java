@@ -1,25 +1,25 @@
 package com.yyy.huojia.output;
 
+import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.TextView;
+
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.content.Intent;
-import android.os.Bundle;
-import android.view.View;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yyy.huojia.R;
 import com.yyy.huojia.dialog.LoadingDialog;
-import com.yyy.huojia.input.InputDetailActivity;
-import com.yyy.huojia.input.InputListActivity;
-import com.yyy.huojia.input.InputListAdapter;
 import com.yyy.huojia.interfaces.OnItemClickListener;
 import com.yyy.huojia.interfaces.ResponseListener;
 import com.yyy.huojia.output.model.OutputList;
+import com.yyy.huojia.util.ResultCode;
 import com.yyy.huojia.util.SharedPreferencesHelper;
 import com.yyy.huojia.util.StringUtil;
 import com.yyy.huojia.util.Toasts;
@@ -38,6 +38,7 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 public class OutputListActivity extends AppCompatActivity {
     @BindView(R.id.tv_title)
@@ -128,6 +129,7 @@ public class OutputListActivity extends AppCompatActivity {
     private void initData(String tables) throws Exception {
         List<OutputList> list = getList(tables);
         if (list != null && list.size() > 0) {
+            this.list.clear();
             this.list.addAll(list);
             runOnUiThread(new Runnable() {
                 @Override
@@ -189,4 +191,30 @@ public class OutputListActivity extends AppCompatActivity {
 
     }
 
+    @OnClick({R.id.iv_back, R.id.iv_right})
+    public void onViewClicked(View view) {
+        switch (view.getId()) {
+            case R.id.iv_back:
+                finish();
+                break;
+            case R.id.iv_right:
+                startActivityForResult(new Intent().setClass(OutputListActivity.this, OutputDetailActivity.class), 0);
+                break;
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch (resultCode) {
+            case ResultCode.DeleteCode:
+                getData();
+                break;
+            case ResultCode.RefreshCode:
+                getData();
+                break;
+            default:
+                break;
+        }
+    }
 }

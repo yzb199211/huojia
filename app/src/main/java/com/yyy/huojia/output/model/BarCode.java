@@ -1,6 +1,6 @@
 package com.yyy.huojia.output.model;
 
-public class Barcode {
+public class BarCode {
 
     /**
      * iSerial : 1
@@ -92,8 +92,8 @@ public class Barcode {
         this.fPrice = fPrice;
     }
 
-    public double getFTotal() {
-        return fTotal;
+    public int getFTotal() {
+        return new Double(fTotal).intValue();
     }
 
     public void setFTotal(double fTotal) {

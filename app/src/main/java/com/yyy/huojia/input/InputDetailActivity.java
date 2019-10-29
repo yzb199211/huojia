@@ -18,6 +18,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -25,14 +26,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yyy.huojia.R;
+import com.yyy.huojia.dialog.DeleteDialog;
 import com.yyy.huojia.dialog.EditDialog;
 import com.yyy.huojia.dialog.JudgeDialog;
 import com.yyy.huojia.dialog.LoadingDialog;
 import com.yyy.huojia.interfaces.OnItemClickListener;
+import com.yyy.huojia.interfaces.OnItemLongClickListener;
 import com.yyy.huojia.interfaces.ResponseListener;
 import com.yyy.huojia.input.model.BarCode;
 import com.yyy.huojia.model.Stock;
 import com.yyy.huojia.model.Supplier;
+import com.yyy.huojia.util.ResultCode;
 import com.yyy.huojia.util.SharedPreferencesHelper;
 import com.yyy.huojia.util.StringUtil;
 import com.yyy.huojia.util.Toasts;
@@ -163,7 +167,7 @@ public class InputDetailActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (codes.size() > 0 && isRed != isChecked) {
-                    showClearDialog();
+                    showClearDialog(isChecked);
                 }
             }
         });
@@ -191,7 +195,7 @@ public class InputDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getCodeParams(String code) {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.BarCode));
+        params.add(new NetParams("otype", Otypes.InBarCode));
         params.add(new NetParams("sBarCode", code));
         params.add(new NetParams("iRed", switchView.isChecked() ? "1" : "0"));
         params.add(new NetParams("iBscDataCustomerRecNo", supplierid + ""));
@@ -331,11 +335,39 @@ public class InputDetailActivity extends AppCompatActivity {
                     showEditDialog(position);
                 }
             });
+            barCodeAdapter.setOnItemLongClickListener(new OnItemLongClickListener() {
+                @Override
+                public void onLongClick(View view, int position) {
+                    showDeleteDialog(position);
+                }
+            });
             rvItem.setAdapter(barCodeAdapter);
         } else {
             barCodeAdapter.notifyDataSetChanged();
         }
         refreshView();
+    }
+
+    DeleteDialog deleteDialog;
+
+    private void showDeleteDialog(int position) {
+        if (deleteDialog == null) {
+            deleteDialog = new DeleteDialog(this).content("确认是否删除" + barCodes.get(position).getSBatchNo() + "?");
+        } else {
+            deleteDialog.setContent(("确认是否删除" + barCodes.get(position).getSBatchNo() + "?"));
+        }
+        deleteDialog.setOnCloseListener(new DeleteDialog.OnCloseListener() {
+            @Override
+            public void onClick(boolean confirm) {
+                if (confirm) {
+                    codes.remove(barCodes.get(position).getSBatchNo());
+                    barCodes.remove(position);
+                    barCodeAdapter.notifyItemRemoved(position);
+                    refreshView();
+                }
+            }
+        });
+        deleteDialog.show();
     }
 
     private void refreshView() {
@@ -378,7 +410,7 @@ public class InputDetailActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.tv_right:
-                startActivity(new Intent().setClass(InputDetailActivity.this,InputNotArrivedActivity.class));
+                startActivity(new Intent().setClass(InputDetailActivity.this, InputNotArrivedActivity.class));
                 break;
             case R.id.tv_stock:
                 select_stock();
@@ -387,7 +419,7 @@ public class InputDetailActivity extends AppCompatActivity {
                 select_supplier();
                 break;
             case R.id.tv_clear:
-                showClearDialog();
+                showClearDialog(isRed);
                 break;
             case R.id.tv_delete:
                 break;
@@ -404,13 +436,13 @@ public class InputDetailActivity extends AppCompatActivity {
         }
     }
 
-    private void showClearDialog() {
+    private void showClearDialog(boolean isRed) {
         if (clearDialog == null)
             clearDialog = new JudgeDialog(this, R.style.JudgeDialog, "是否清空所有条码数据？", new JudgeDialog.OnCloseListener() {
                 @Override
                 public void onClick(boolean confirm) {
                     if (confirm) {
-                        clear();
+                        clear(isRed);
                     } else {
                         switchView.setChecked(isRed);
                     }
@@ -419,11 +451,11 @@ public class InputDetailActivity extends AppCompatActivity {
         clearDialog.show();
     }
 
-    private void clear() {
+    private void clear(boolean isRed) {
         codes.clear();
         barCodes.clear();
         refreshList();
-        isRed = !isRed;
+        this.isRed = isRed;
     }
 
     private void clearAll() {
@@ -804,5 +836,6 @@ public class InputDetailActivity extends AppCompatActivity {
             }
         });
     }
+
 
 }

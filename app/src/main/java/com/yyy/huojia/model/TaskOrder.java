@@ -1,6 +1,8 @@
 package com.yyy.huojia.model;
 
-public class TaskOrder {
+import com.yyy.yyylibrary.wheel.interfaces.IPickerViewData;
+
+public class TaskOrder implements IPickerViewData {
 
     /**
      * iRecNo : 55
@@ -204,5 +206,10 @@ public class TaskOrder {
 
     public void setSCheckUserName(String sCheckUserName) {
         this.sCheckUserName = sCheckUserName;
+    }
+
+    @Override
+    public String getPickerViewText() {
+        return sBillNo;
     }
 }
