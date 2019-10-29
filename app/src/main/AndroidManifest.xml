@@ -23,9 +23,16 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".input.InputNotArrivedActivity"></activity>
-        <activity android:name=".output.OutputDetailActivity" />
-        <activity android:name=".output.OutputListActivity" />
+        <activity
+            android:name=".input.InputNotArrivedActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".output.OutputDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".output.OutputListActivity"
+            android:screenOrientation="portrait" />
 
         <provider
             android:name="androidx.core.content.FileProvider"
