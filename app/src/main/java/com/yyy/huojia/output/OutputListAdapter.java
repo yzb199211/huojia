@@ -40,7 +40,7 @@ public class OutputListAdapter extends RecyclerView.Adapter<OutputListAdapter.VH
     @Override
     public void onBindViewHolder(@NonNull VH holder, int position) {
         OutputList outputList = list.get(position);
-        holder.tvOrder.setText("领用单号：" + outputList.getSBillNo());
+        holder.tvOrder.setText(outputList.getSBillNo());
         holder.tvRed.setText(outputList.getSRed().equals("是") ? "红冲" : "");
         holder.tvStock.setText("仓库名称：" + outputList.getSStockName());
         holder.tvWeight.setText("领用重量：" + outputList.getFQty() + "kg");

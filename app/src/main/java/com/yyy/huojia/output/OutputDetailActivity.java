@@ -161,7 +161,7 @@ public class OutputDetailActivity extends AppCompatActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 Log.e("code", event.getScanCode() + "");
-                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() ==240) && event.getAction() == KeyEvent.ACTION_UP) {
+                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() == 240) && event.getAction() == KeyEvent.ACTION_UP) {
                     getCodeData(etCode.getText().toString());
                     etCode.setText("");
                 }
@@ -562,7 +562,7 @@ public class OutputDetailActivity extends AppCompatActivity {
         params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
         params.add(new NetParams("iProTaskOrderMRecNo", taskid + ""));
         params.add(new NetParams("sUserID", userid));
-        params.add(new NetParams("iMMStockOutMRecNo ", RecNo + ""));
+        params.add(new NetParams("iMMStockOutMRecNo", RecNo + ""));
         params.add(new NetParams("iRed", switchView.isChecked() ? "1" : "0"));
         params.add(new NetParams("sBarCodes", getBarcodes()));
         return params;
