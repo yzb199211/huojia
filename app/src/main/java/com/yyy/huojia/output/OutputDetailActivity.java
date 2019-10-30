@@ -145,7 +145,7 @@ public class OutputDetailActivity extends AppCompatActivity {
         tvTitle.setText(getString(R.string.title_output));
         ivRight.setVisibility(View.GONE);
         tvTotalWeight.setText("总重量：0kg");
-        tvTotalMoney.setText("总金额：0");
+        tvTotalMoney.setText("总卷数：0");
         initRecycle();
         initScanCode();
     }
@@ -161,7 +161,7 @@ public class OutputDetailActivity extends AppCompatActivity {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
                 Log.e("code", event.getScanCode() + "");
-                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() == 240) && event.getAction() == KeyEvent.ACTION_UP) {
+                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() == 148) && event.getAction() == KeyEvent.ACTION_UP) {
                     getCodeData(etCode.getText().toString());
                     etCode.setText("");
                 }
@@ -171,6 +171,50 @@ public class OutputDetailActivity extends AppCompatActivity {
 
     }
 
+    private class Sort {
+        int count;
+        int type;
+
+        public Sort(int count, int type) {
+            this.count = count;
+            this.type = type;
+        }
+
+        public int getCount() {
+            return count;
+        }
+
+        public void setCount(int count) {
+            this.count = count;
+        }
+
+        public void addCount() {
+            this.count = this.count + 1;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public void setType(int type) {
+            this.type = type;
+        }
+    }
+
+    List<Sort> sorts = new ArrayList<>();
+
+    private String getCodeSort() {
+        String data = "";
+        for (int i = 0; i < sorts.size(); i++) {
+            if (i == 0) {
+                data = sorts.get(i).type + "," + sorts.get(i).getCount();
+            } else {
+                data = ";" + sorts.get(i).type + "," + sorts.get(i).getCount();
+            }
+        }
+        return data;
+    }
+
     private List<NetParams> getCodeParams(String code) {
         List<NetParams> params = new ArrayList<>();
         params.add(new NetParams("otype", Otypes.OutBarCode));
@@ -178,6 +222,7 @@ public class OutputDetailActivity extends AppCompatActivity {
         params.add(new NetParams("iRed", switchView.isChecked() ? "1" : "0"));
         params.add(new NetParams("iProTaskOrderMRecNo", taskid + ""));
         params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
+        params.add(new NetParams("sQty", getCodeSort()));
         return params;
     }
 
@@ -231,9 +276,23 @@ public class OutputDetailActivity extends AppCompatActivity {
             codes.add(list.get(i).getSBatchNo());
             if (size < codes.size()) {
                 barCodes.add(0, list.get(i));
+                addSort(list.get(i));
             }
         }
         setRecycle();
+    }
+
+    private void addSort(BarCode code) {
+        boolean isContain = false;
+        for (int i = 0; i < sorts.size(); i++) {
+            if (sorts.get(i).getType() == code.getiBscDataMatRecNo()) {
+                sorts.get(i).addCount();
+                isContain = true;
+            }
+        }
+        if (isContain == false) {
+            sorts.add(new Sort(code.getiBscDataMatRecNo(), 1));
+        }
     }
 
     private void setRecycle() {
@@ -242,6 +301,7 @@ public class OutputDetailActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     refreshList();
+                    FinishLoading(null);
                 }
             });
         }
@@ -287,7 +347,7 @@ public class OutputDetailActivity extends AppCompatActivity {
 
     private void refreshView() {
         tvTotalWeight.setText("总重量：" + getTotalWeight() + "kg");
-        tvTotalMoney.setText("总金额：" + getTotalMoney());
+        tvTotalMoney.setText("总卷数：" + barCodes.size());
     }
 
     private int getTotalMoney() {

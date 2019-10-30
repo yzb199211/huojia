@@ -27,6 +27,11 @@ public class BarCode {
     private double fTotal;
     private String sProTaskOrderMBillNo;
     private String sStockShortName;
+    private int iBscDataMatRecNo;
+
+    public int getiBscDataMatRecNo() {
+        return iBscDataMatRecNo;
+    }
 
     public int getISerial() {
         return iSerial;

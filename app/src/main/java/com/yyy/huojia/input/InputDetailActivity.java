@@ -184,7 +184,7 @@ public class InputDetailActivity extends AppCompatActivity {
         etCode.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() == 240) && event.getAction() == KeyEvent.ACTION_UP) {
+                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() ==148) && event.getAction() == KeyEvent.ACTION_UP) {
                     getCodeData(etCode.getText().toString());
                     etCode.setText("");
                 }
