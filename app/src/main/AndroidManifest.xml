@@ -23,6 +23,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+        <activity android:name=".check.CheckDetailActivity"></activity>
+        <activity android:name=".check.CheckListActivity" />
         <activity
             android:name=".input.InputNotArrivedActivity"
             android:screenOrientation="portrait" />
