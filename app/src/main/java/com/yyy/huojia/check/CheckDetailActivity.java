@@ -166,7 +166,7 @@ public class CheckDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getCodeParams(String code) {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.InBarCode));
+        params.add(new NetParams("otype", Otypes.CheckBarCode));
         params.add(new NetParams("sBarCode", code));
         params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
         return params;
@@ -585,10 +585,10 @@ public class CheckDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getSaveParams() {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.InputSave));
+        params.add(new NetParams("otype", Otypes.CheckSave));
         params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
         params.add(new NetParams("sUserID", userid));
-        params.add(new NetParams("iMMStockInMRecNo", RecNo + ""));
+        params.add(new NetParams("iMMStockCheckMRecNo", RecNo + ""));
         params.add(new NetParams("sBarCodes", getBarcodes()));
         return params;
     }
@@ -627,6 +627,7 @@ public class CheckDetailActivity extends AppCompatActivity {
                                         FinishLoading(getString(R.string.error_json));
                                     }
                                 } else {
+                                    setResult(ResultCode.RefreshCode);
                                     finish();
                                 }
                             }
@@ -653,7 +654,7 @@ public class CheckDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getSubmitParams() {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.InputSubmit));
+        params.add(new NetParams("otype", Otypes.CheckSubmit));
         params.add(new NetParams("iRecNo", RecNo + ""));
         params.add(new NetParams("sUserID", userid));
         return params;
@@ -712,7 +713,7 @@ public class CheckDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getDeleteParams() {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.OutputDelete));
+        params.add(new NetParams("otype", Otypes.CheckDelete));
         params.add(new NetParams("iRecNo", RecNo + ""));
         return params;
     }

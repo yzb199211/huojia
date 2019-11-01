@@ -34,40 +34,40 @@
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
 
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+
+        <TextView
+            android:id="@+id/tv_weight_old"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_20"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/tv_weight_new"
+            android:layout_width="@dimen/dp_0"
+            android:layout_height="@dimen/dp_20"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text=""
+            android:textColor="@color/red"
+            android:textSize="@dimen/sp_12" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-
-            <TextView
-                android:id="@+id/tv_weight_old"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_20"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="@color/red"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_weight_new"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="@dimen/dp_20"
-                android:layout_weight="1"
-                android:gravity="center_vertical"
-                android:singleLine="true"
-                android:text=""
-                android:textColor="@color/red"
-                android:textSize="@dimen/sp_12" />
-        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_element"

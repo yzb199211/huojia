@@ -31,7 +31,7 @@ public class BarCode {
     }
 
     public void setfPcQty(double fPcQty) {
-        this.fPcQty = fPcQty;
+        this.fPcQty = fPcQty<fStockQty?fPcQty:fStockQty;
     }
 
     public int getfStockQty() {

@@ -138,8 +138,6 @@ public class OutputListActivity extends AppCompatActivity {
                 }
             });
 
-        } else {
-            FinishLoading(getString(R.string.empty_data));
         }
     }
 
@@ -208,9 +206,13 @@ public class OutputListActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (resultCode) {
             case ResultCode.DeleteCode:
+                list.clear();
+                refreshList();
                 getData();
                 break;
             case ResultCode.RefreshCode:
+                list.clear();
+                refreshList();
                 getData();
                 break;
             default:

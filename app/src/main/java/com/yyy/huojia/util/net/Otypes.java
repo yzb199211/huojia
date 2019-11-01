@@ -17,6 +17,10 @@ public class Otypes {
 
     public static final String CheckList = "GetMMStockCheckMNotSubmit";
     public static final String CheckDetail = "GetMMStockCheckDNotSubmit";
+    public static final String CheckBarCode = "MMStockCheckBarcode";
+    public static final String CheckSave = "SaveMMStockCheckM";
+    public static final String CheckSubmit = "SubmitMMStockCheckM";
+    public static final String CheckDelete = "DeleteMMStockCheckM";
 
     public static final String Stock = "GetPurStockM";
     public static final String Supplier = "GetPurCustomerM";
