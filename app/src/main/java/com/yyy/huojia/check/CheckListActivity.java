@@ -17,10 +17,8 @@ import com.google.gson.reflect.TypeToken;
 import com.yyy.huojia.R;
 import com.yyy.huojia.check.model.CheckList;
 import com.yyy.huojia.dialog.LoadingDialog;
-import com.yyy.huojia.input.InputListActivity;
 import com.yyy.huojia.interfaces.OnItemClickListener;
 import com.yyy.huojia.interfaces.ResponseListener;
-import com.yyy.huojia.output.OutputDetailActivity;
 import com.yyy.huojia.util.ResultCode;
 import com.yyy.huojia.util.SharedPreferencesHelper;
 import com.yyy.huojia.util.StringUtil;
@@ -28,6 +26,7 @@ import com.yyy.huojia.util.Toasts;
 import com.yyy.huojia.util.net.NetConfig;
 import com.yyy.huojia.util.net.NetParams;
 import com.yyy.huojia.util.net.NetUtil;
+import com.yyy.huojia.util.net.Otypes;
 import com.yyy.huojia.view.recycle.RecyclerViewDivider;
 
 import org.json.JSONException;
@@ -95,6 +94,8 @@ public class CheckListActivity extends AppCompatActivity {
 
     private List<NetParams> getParams() {
         List<NetParams> params = new ArrayList<>();
+        params.add(new NetParams("otype", Otypes.CheckList));
+        params.add(new NetParams("sUserID", userid));
         return params;
     }
 
@@ -165,7 +166,7 @@ public class CheckListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 startActivityForResult(new Intent()
-                                .setClass(CheckListActivity.this, OutputDetailActivity.class)
+                                .setClass(CheckListActivity.this, CheckDetailActivity.class)
                                 .putExtra("RecNo", list.get(position).getIRecNo())
                                 .putExtra("stockname", list.get(position).getSStockName())
                                 .putExtra("stockid", list.get(position).getiBscDataStockMRecNo())

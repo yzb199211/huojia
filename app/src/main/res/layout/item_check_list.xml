@@ -59,16 +59,6 @@
             android:textSize="@dimen/sp_14" />
     </LinearLayout>
 
-    <TextView
-        android:id="@+id/tv_supplier"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_20"
-        android:gravity="center_vertical"
-        android:singleLine="true"
-        android:textColor="@color/default_text_color"
-        android:textSize="@dimen/sp_14"
-       />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_20"

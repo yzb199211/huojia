@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.yyy.huojia.R;
+import com.yyy.huojia.check.CheckListActivity;
 import com.yyy.huojia.input.InputDetailActivity;
 import com.yyy.huojia.input.InputListActivity;
 import com.yyy.huojia.interfaces.OnItemClickListener;
@@ -84,7 +85,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(MainActivity.this, OutputListActivity.class));
                 break;
             case 3:
-
+                startActivity(new Intent().setClass(MainActivity.this, CheckListActivity.class));
                 break;
             case 4:
 

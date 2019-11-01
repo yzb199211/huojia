@@ -77,6 +77,11 @@ public class CheckDetailActivity extends AppCompatActivity {
     RecyclerView rvItem;
     @BindView(R.id.tv_delete)
     TextView tvDelete;
+    @BindView(R.id.tv_total_old)
+    TextView tvTotalOld;
+    @BindView(R.id.tv_total_new)
+    TextView tvTotalNew;
+
     SharedPreferencesHelper preferencesHelper;
 
     int RecNo;
@@ -128,11 +133,14 @@ public class CheckDetailActivity extends AppCompatActivity {
     private void getIntentData() {
         RecNo = getIntent().getIntExtra("RecNo", 0);
     }
+
     private void initView() {
         tvTitle.setText(getString(R.string.title_input));
         ivRight.setVisibility(View.GONE);
         tvTotalNum.setText("总卷数：0");
-        tvTotalWeight.setText("总重量：0kg");
+        tvTotalWeight.setText("盈亏重量：0kg");
+        tvTotalOld.setText("账面重量：0kg");
+        tvTotalNew.setText("实际重量：0kg");
         initRecycle();
         initScanCode();
     }
@@ -147,7 +155,7 @@ public class CheckDetailActivity extends AppCompatActivity {
         etCode.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View v, int keyCode, KeyEvent event) {
-                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() ==148) && event.getAction() == KeyEvent.ACTION_UP) {
+                if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() == 148) && event.getAction() == KeyEvent.ACTION_UP) {
                     getCodeData(etCode.getText().toString());
                     etCode.setText("");
                 }
@@ -197,6 +205,7 @@ public class CheckDetailActivity extends AppCompatActivity {
             }
         });
     }
+
     private void judgeRecNo() {
         if (RecNo == 0) {
             tvDelete.setVisibility(View.INVISIBLE);
@@ -213,8 +222,8 @@ public class CheckDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getParams() {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("iMMStockInMRecNo", RecNo + ""));
-        params.add(new NetParams("otype", Otypes.InputDetail));
+        params.add(new NetParams("iMMStockCheckMRecNo", RecNo + ""));
+        params.add(new NetParams("otype", Otypes.CheckDetail));
         return params;
     }
 
@@ -300,7 +309,9 @@ public class CheckDetailActivity extends AppCompatActivity {
 
     private void refreshView() {
         tvTotalNum.setText("总卷数：" + barCodes.size());
-        tvTotalWeight.setText("总重量：" + getTotalWeight() + "kg");
+        tvTotalWeight.setText("盈亏重量：" + getTotalWeight() + "kg");
+        tvTotalOld.setText("账面重量：" + getTotalOld() + "kg");
+        tvTotalNew.setText("实际重量：" + getTotalNew() + "kg");
     }
 
     private int getTotalWeight() {
@@ -311,18 +322,34 @@ public class CheckDetailActivity extends AppCompatActivity {
         return weight;
     }
 
+    private int getTotalOld() {
+        int weight = 0;
+        for (BarCode barCode : barCodes) {
+            weight = weight + barCode.getfStockQty();
+        }
+        return weight;
+    }
+
+    private int getTotalNew() {
+        int weight = 0;
+        for (BarCode barCode : barCodes) {
+            weight = weight + barCode.getfPcQty();
+        }
+        return weight;
+    }
+
     private void showEditDialog(int position) {
         if (editDialog == null) {
-            editDialog = new EditDialog(this).title("修改" + barCodes.get(position).getSBatchNo() + "重量").max(barCodes.get(position).getFQty());
+            editDialog = new EditDialog(this).title("修改" + barCodes.get(position).getSBatchNo() + "实际重量").max(barCodes.get(position).getfPcQty());
         } else {
-            editDialog.setTitle(("修改" + barCodes.get(position).getSCode() + "重量"));
-            editDialog.setMax(barCodes.get(position).getFQty());
+            editDialog.setTitle(("修改" + barCodes.get(position).getSCode() + "实际重量"));
+            editDialog.setMax(barCodes.get(position).getfPcQty());
         }
         editDialog.setOnCloseListener(new EditDialog.OnCloseListener() {
             @Override
             public void onClick(boolean confirm, @NonNull String data) {
                 if (confirm) {
-                    barCodes.get(position).setFQty(Double.parseDouble(data));
+                    barCodes.get(position).setfPcQty(Double.parseDouble(data));
                     barCodeAdapter.notifyItemChanged(position);
                     refreshView();
                 }
@@ -380,8 +407,9 @@ public class CheckDetailActivity extends AppCompatActivity {
                 break;
         }
     }
+
     private boolean canSave() {
-        if (stockid == 0 ) {
+        if (stockid == 0) {
             Toasts.showShort(this, "仓库不能为空");
             return false;
         }
@@ -666,6 +694,7 @@ public class CheckDetailActivity extends AppCompatActivity {
             }
         });
     }
+
     JudgeDialog deleteMain;
 
     private void showDeleteMain() {
@@ -723,6 +752,7 @@ public class CheckDetailActivity extends AppCompatActivity {
             }
         });
     }
+
     private void FinishLoading(@NonNull String msg) {
         runOnUiThread(new Runnable() {
             @Override

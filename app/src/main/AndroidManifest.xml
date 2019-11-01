@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.yyy.huojia">
 
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
@@ -23,8 +24,6 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
-        <activity android:name=".check.CheckDetailActivity"></activity>
-        <activity android:name=".check.CheckListActivity" />
         <activity
             android:name=".input.InputNotArrivedActivity"
             android:screenOrientation="portrait" />
@@ -66,6 +65,13 @@
         <activity
             android:name=".input.InputListActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.CheckListActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".check.CheckDetailActivity"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="adjustResize|stateHidden" />
     </application>
 
 </manifest>

@@ -44,9 +44,8 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.VH> 
         CheckList inputList = list.get(position);
         holder.tvOrder.setText(inputList.getSBillNo());
         holder.tvStock.setText(inputList.getSStockName());
-        holder.tvWeight.setText(inputList.getFQty() + "kg");
-        holder.tvSupplier.setText(inputList.getSCustShortName());
-        holder.tvDate.setText(StringUtil.formatDate(inputList.getDDate()));
+        holder.tvWeight.setText("盈亏重量：" + inputList.getFQty() + "kg");
+        holder.tvDate.setText(StringUtil.formatDate(inputList.getDInputDate()));
         holder.tvMan.setText(inputList.getSUserName());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,7 +67,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.VH> 
         TextView tvRed;
         TextView tvStock;
         TextView tvWeight;
-        TextView tvSupplier;
         TextView tvDate;
         TextView tvMan;
 
@@ -78,7 +76,6 @@ public class CheckListAdapter extends RecyclerView.Adapter<CheckListAdapter.VH> 
             tvRed = v.findViewById(R.id.tv_red);
             tvStock = v.findViewById(R.id.tv_stock);
             tvWeight = v.findViewById(R.id.tv_weight);
-            tvSupplier = v.findViewById(R.id.tv_supplier);
             tvDate = v.findViewById(R.id.tv_date);
             tvMan = v.findViewById(R.id.tv_man);
         }

@@ -15,6 +15,9 @@ public class Otypes {
     public static final String OutputSubmit = "SubmitMMStockOutM";
     public static final String OutputDelete = "DeleteMMStockOutM";
 
+    public static final String CheckList = "GetMMStockCheckMNotSubmit";
+    public static final String CheckDetail = "GetMMStockCheckDNotSubmit";
+
     public static final String Stock = "GetPurStockM";
     public static final String Supplier = "GetPurCustomerM";
     public static final String Task = "GetProTaskOrderM";

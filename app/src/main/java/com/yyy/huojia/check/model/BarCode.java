@@ -15,6 +15,8 @@ public class BarCode {
 
     private String sBatchNo;
     private double fQty;
+    private double fStockQty;
+    private double fPcQty;
     private String sCode;
     private String sName;
     private String sElements;
@@ -23,6 +25,22 @@ public class BarCode {
     private String sPurOrderMatMBillNo;
     private int iBscDataCustomerRecNo;
     private String sCustShortName;
+
+    public void setfStockQty(double fStockQty) {
+        this.fStockQty = fStockQty;
+    }
+
+    public void setfPcQty(double fPcQty) {
+        this.fPcQty = fPcQty;
+    }
+
+    public int getfStockQty() {
+        return new Double(fStockQty).intValue();
+    }
+
+    public int getfPcQty() {
+        return new Double(fPcQty).intValue();
+    }
 
     public int getiBscDataCustomerRecNo() {
         return iBscDataCustomerRecNo;
@@ -49,6 +67,7 @@ public class BarCode {
     }
 
     public int getFQty() {
+        this.fQty = fPcQty - fStockQty;
         return (new Double(fQty)).intValue();
     }
 
