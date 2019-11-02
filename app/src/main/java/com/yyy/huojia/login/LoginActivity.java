@@ -492,11 +492,11 @@ public class LoginActivity extends BaseActivity {
     /*apk下载*/
     private void downFile(String url) {
         showPrograss();
-        File dirfile = FileUtil.creatDir(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "huanxinOA");
-        file = FileUtil.creatFile(dirfile, "huanxinoa.apk");
+        File dirfile = FileUtil.creatDir(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "zhongda");
+        file = FileUtil.creatFile(dirfile, "huojia.apk");
 
 
-        new NetUtil(url, Environment.getExternalStorageDirectory().getAbsolutePath(), "/huanxinOA/huanxinoa.apk", new NetUtil.OnDownloadListener() {
+        new NetUtil(url, Environment.getExternalStorageDirectory().getAbsolutePath(), "/zhongda/huojia.apk", new NetUtil.OnDownloadListener() {
             @Override
             public void onDownloadSuccess(File file) {
                 if (progressDialog != null && progressDialog.isShowing()) {
