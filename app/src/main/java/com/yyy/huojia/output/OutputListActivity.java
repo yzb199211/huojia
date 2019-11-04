@@ -138,7 +138,8 @@ public class OutputListActivity extends AppCompatActivity {
                 }
             });
 
-        }
+        } else
+            FinishLoading(null);
     }
 
     private List<OutputList> getList(String data) throws Exception {
