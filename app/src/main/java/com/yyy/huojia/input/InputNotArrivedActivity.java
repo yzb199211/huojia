@@ -134,6 +134,13 @@ public class InputNotArrivedActivity extends AppCompatActivity {
                 }
             });
 
+        } else {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    FinishLoading(null);
+                }
+            });
         }
     }
 

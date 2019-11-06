@@ -140,7 +140,7 @@ public class CheckListActivity extends AppCompatActivity {
                 }
             });
 
-        }else {
+        } else {
             FinishLoading(null);
         }
     }
