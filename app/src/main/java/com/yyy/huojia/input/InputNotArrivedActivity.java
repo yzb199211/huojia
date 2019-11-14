@@ -133,7 +133,6 @@ public class InputNotArrivedActivity extends AppCompatActivity {
                     FinishLoading(null);
                 }
             });
-
         } else {
             runOnUiThread(new Runnable() {
                 @Override

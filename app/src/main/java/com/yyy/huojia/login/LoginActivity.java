@@ -239,10 +239,12 @@ public class LoginActivity extends BaseActivity {
         Gson gson = new Gson();
         LoginBean model = gson.fromJson(response, LoginBean.class);
         if (model.isSuccess()) {
-            dowmloadUrl = model.getTables().getAPPInfo().get(0).getSAppApk();
-            int readTimeout = model.getTables().getAPPInfo().get(0).getiTimeout();
-            if (readTimeout > 0) {
-                BaseApplication.getInstance().setClinet(readTimeout);
+            if (model.getTables().getAPPInfo().size() > 0) {
+                dowmloadUrl = model.getTables().getAPPInfo().get(0).getSAppApk();
+                int readTimeout = model.getTables().getAPPInfo().get(0).getiTimeout();
+                if (readTimeout > 0) {
+                    BaseApplication.getInstance().setClinet(readTimeout);
+                }
             }
             runOnUiThread(new Runnable() {
                 @Override
