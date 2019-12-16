@@ -45,7 +45,7 @@ public class ExchangeListAdapter extends RecyclerView.Adapter<ExchangeListAdapte
         holder.tvStockIn.setText("调入仓：" + exchangeList.getSInStockName());
         holder.tvStockOut.setText("调出仓：" + exchangeList.getSOutStockName());
         holder.tvWeight.setText("重量：" + exchangeList.getFQty() + "kg");
-        holder.tvNum.setText("金额：" + exchangeList.getFTotal() + "kg");
+        holder.tvNum.setText("金额：" + exchangeList.getFTotal() + "");
         holder.tvDate.setText("调拨日期：" + StringUtil.formatDate(exchangeList.getDDate()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +78,8 @@ public class ExchangeListAdapter extends RecyclerView.Adapter<ExchangeListAdapte
             tvStockIn = v.findViewById(R.id.tv_stock_in);
             tvStockOut = v.findViewById(R.id.tv_stock_out);
             tvWeight = v.findViewById(R.id.tv_weight);
-            tvWeight = v.findViewById(R.id.tv_weight);
             tvDate = v.findViewById(R.id.tv_date);
-            tvMan = v.findViewById(R.id.tv_man);
+            tvMan = v.findViewById(R.id.tv_name);
             tvNum = v.findViewById(R.id.tv_num);
         }
     }

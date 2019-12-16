@@ -26,8 +26,9 @@ public class BarCode {
     private double fPrice;
     private double fTotal;
     private String sProTaskOrderMBillNo;
-    private String sStockShortName;
+    private String sCustShortName;
     private int iBscDataMatRecNo;
+
 
     public int getiBscDataMatRecNo() {
         return iBscDataMatRecNo;
@@ -114,10 +115,10 @@ public class BarCode {
     }
 
     public String getSStockShortName() {
-        return sStockShortName;
+        return sCustShortName;
     }
 
     public void setSStockShortName(String sStockShortName) {
-        this.sStockShortName = sStockShortName;
+        this.sCustShortName = sStockShortName;
     }
 }

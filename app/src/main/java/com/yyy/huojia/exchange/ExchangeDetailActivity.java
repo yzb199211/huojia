@@ -175,7 +175,7 @@ public class ExchangeDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getCodeParams(String code) {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.OutBarCode));
+        params.add(new NetParams("otype", Otypes.ExchangeCode));
         params.add(new NetParams("sBarcode", code));
         params.add(new NetParams("iOutBscDataStockMRecNo", stockidOut + ""));
         return params;
@@ -191,6 +191,7 @@ public class ExchangeDetailActivity extends AppCompatActivity {
             @Override
             public void onSuccess(String string) {
                 try {
+                    Log.e("data", string);
                     JSONObject jsonObject = new JSONObject(string);
                     if (jsonObject.optBoolean("success")) {
                         initCodeList(jsonObject.optJSONArray("tables").optString(0));

@@ -17,9 +17,7 @@ import com.yyy.huojia.R;
 import com.yyy.huojia.dialog.LoadingDialog;
 import com.yyy.huojia.interfaces.OnItemClickListener;
 import com.yyy.huojia.interfaces.ResponseListener;
-import com.yyy.huojia.output.OutputDetailActivity;
-import com.yyy.huojia.output.OutputListAdapter;
-import com.yyy.huojia.output.model.OutputList;
+
 import com.yyy.huojia.util.ResultCode;
 import com.yyy.huojia.util.SharedPreferencesHelper;
 import com.yyy.huojia.util.StringUtil;
@@ -144,7 +142,7 @@ public class ExchangeListActivity extends AppCompatActivity {
     }
 
     private List<ExchangeList> getList(String data) throws Exception {
-        return new Gson().fromJson(data, new TypeToken<List<OutputList>>() {
+        return new Gson().fromJson(data, new TypeToken<List<ExchangeList>>() {
         }.getType());
     }
 
@@ -164,7 +162,7 @@ public class ExchangeListActivity extends AppCompatActivity {
             @Override
             public void onItemClick(View view, int position) {
                 startActivityForResult(new Intent()
-                                .setClass(ExchangeListActivity.this, OutputDetailActivity.class)
+                                .setClass(ExchangeListActivity.this, ExchangeDetailActivity.class)
                                 .putExtra("data", new Gson().toJson(list.get(position)))
                         , 0
                 );
@@ -193,7 +191,7 @@ public class ExchangeListActivity extends AppCompatActivity {
                 finish();
                 break;
             case R.id.iv_right:
-                startActivityForResult(new Intent().setClass(ExchangeListActivity.this, OutputDetailActivity.class), 0);
+                startActivityForResult(new Intent().setClass(ExchangeListActivity.this, ExchangeDetailActivity.class), 0);
                 break;
         }
     }

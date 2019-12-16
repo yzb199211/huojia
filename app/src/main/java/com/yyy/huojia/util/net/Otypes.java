@@ -28,6 +28,7 @@ public class Otypes {
     public static final String ExchangeSave= "SaveMMStockDbM";
     public static final String ExchangeSubmit= "SubmitMMStockDbM";
     public static final String ExchangeDelete= "DeleteMMStockDbM";
+    public static final String ExchangeCode= "MMStockDbBarcode";
 
     public static final String Stock = "GetPurStockM";
     public static final String Supplier = "GetPurCustomerM";
