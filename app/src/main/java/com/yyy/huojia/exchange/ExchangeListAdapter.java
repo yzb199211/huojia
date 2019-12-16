@@ -47,14 +47,13 @@ public class ExchangeListAdapter extends RecyclerView.Adapter<ExchangeListAdapte
         holder.tvWeight.setText("重量：" + exchangeList.getFQty() + "kg");
         holder.tvNum.setText("金额：" + exchangeList.getFTotal() + "");
         holder.tvDate.setText("调拨日期：" + StringUtil.formatDate(exchangeList.getDDate()));
-        holder.itemView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if (onItemClickListener != null) {
-                    onItemClickListener.onItemClick(v, position);
+        holder.itemView.setOnClickListener(
+                v -> {
+                    if (onItemClickListener != null) {
+                        onItemClickListener.onItemClick(v, position);
+                    }
                 }
-            }
-        });
+        );
     }
 
     @Override
