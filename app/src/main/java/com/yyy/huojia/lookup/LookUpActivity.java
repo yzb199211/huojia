@@ -128,9 +128,9 @@ public class LookUpActivity extends AppCompatActivity {
                 @Override
                 public void onItemClick(View view, int position) {
                     Intent intent = new Intent();
-                    intent.putExtra("name", mlist.get(position).getName());
-                    intent.putExtra("id", mlist.get(position).getId());
-                    intent.putExtra("link_id", mlist.get(position).getLink_id());
+                    intent.putExtra("name", showList.get(position).getName());
+                    intent.putExtra("id", showList.get(position).getId());
+                    intent.putExtra("link_id", showList.get(position).getLink_id());
                     setResult(code, intent);
                     finish();
                 }

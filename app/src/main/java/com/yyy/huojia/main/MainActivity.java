@@ -12,6 +12,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.yyy.huojia.R;
 import com.yyy.huojia.check.CheckListActivity;
+import com.yyy.huojia.exchange.ExchangeList;
+import com.yyy.huojia.exchange.ExchangeListActivity;
 import com.yyy.huojia.input.InputDetailActivity;
 import com.yyy.huojia.input.InputListActivity;
 import com.yyy.huojia.interfaces.OnItemClickListener;
@@ -59,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         list.add(new MainMenu(1, R.mipmap.icon_storage, "入库单"));
         list.add(new MainMenu(2, R.mipmap.icon_output, "出库单"));
         list.add(new MainMenu(3, R.mipmap.icon_statistics, "盘点单"));
+        list.add(new MainMenu(4, R.mipmap.icon_exchange, "调拨单"));
 
         menuUsualAdapter = new MenuUsualAdapter(list, this);
         rvMenu.setAdapter(menuUsualAdapter);
@@ -88,7 +91,7 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(MainActivity.this, CheckListActivity.class));
                 break;
             case 4:
-
+                startActivity(new Intent().setClass(MainActivity.this, ExchangeListActivity.class));
                 break;
             case 5:
 

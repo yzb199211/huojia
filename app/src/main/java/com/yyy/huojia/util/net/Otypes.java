@@ -22,6 +22,13 @@ public class Otypes {
     public static final String CheckSubmit = "SubmitMMStockCheckM";
     public static final String CheckDelete = "DeleteMMStockCheckM";
 
+    public static final String ExchangeList = "GetMMStockDbMNotSubmit";
+    public static final String ExchangeDetail = "GetMMStockDbDNotSubmit";
+    public static final String ExchangeStock = "getStockM";
+    public static final String ExchangeSave= "SaveMMStockDbM";
+    public static final String ExchangeSubmit= "SubmitMMStockDbM";
+    public static final String ExchangeDelete= "DeleteMMStockDbM";
+
     public static final String Stock = "GetPurStockM";
     public static final String Supplier = "GetPurCustomerM";
     public static final String Task = "GetProTaskOrderM";
