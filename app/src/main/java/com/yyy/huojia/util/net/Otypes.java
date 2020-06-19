@@ -31,7 +31,10 @@ public class Otypes {
     public static final String ExchangeCode= "MMStockDbBarcode";
 
     public static final String Stock = "GetPurStockM";
+    public static final String GetEvenStockM = "GetEvenStockM";
     public static final String Supplier = "GetPurCustomerM";
     public static final String Task = "GetProTaskOrderM";
+    public static final String MMStockOutBarcodeEven = "MMStockOutBarcodeEven";
+    public static final String SaveMMStockOutMEven = "SaveMMStockOutMEven";
 
 }

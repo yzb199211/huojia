@@ -17,6 +17,7 @@ import com.yyy.huojia.exchange.ExchangeListActivity;
 import com.yyy.huojia.input.InputDetailActivity;
 import com.yyy.huojia.input.InputListActivity;
 import com.yyy.huojia.interfaces.OnItemClickListener;
+import com.yyy.huojia.kaiping.KaiPingDetailActivity;
 import com.yyy.huojia.output.OutputListActivity;
 
 import java.util.ArrayList;
@@ -59,9 +60,10 @@ public class MainActivity extends AppCompatActivity {
     private void setMenus() {
         List<MainMenu> list = new ArrayList<>();
         list.add(new MainMenu(1, R.mipmap.icon_storage, "入库单"));
-        list.add(new MainMenu(2, R.mipmap.icon_output, "出库单"));
-        list.add(new MainMenu(3, R.mipmap.icon_statistics, "盘点单"));
-        list.add(new MainMenu(4, R.mipmap.icon_exchange, "调拨单"));
+        list.add(new MainMenu(2, R.mipmap.icon_fentiao, "分条单"));
+        list.add(new MainMenu(3, R.mipmap.icon_output, "开平单"));
+        list.add(new MainMenu(4, R.mipmap.icon_statistics, "盘点单"));
+        list.add(new MainMenu(5, R.mipmap.icon_exchange, "调拨单"));
 
         menuUsualAdapter = new MenuUsualAdapter(list, this);
         rvMenu.setAdapter(menuUsualAdapter);
@@ -79,7 +81,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void goNext(int id) {
-        Intent intent = new Intent();
         switch (id) {
             case 1:
                 startActivity(new Intent().setClass(MainActivity.this, InputDetailActivity.class));
@@ -88,13 +89,13 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(new Intent().setClass(MainActivity.this, OutputListActivity.class));
                 break;
             case 3:
-                startActivity(new Intent().setClass(MainActivity.this, CheckListActivity.class));
+                startActivity(new Intent().setClass(MainActivity.this, KaiPingDetailActivity.class));
                 break;
             case 4:
-                startActivity(new Intent().setClass(MainActivity.this, ExchangeListActivity.class));
+                startActivity(new Intent().setClass(MainActivity.this, CheckListActivity.class));
                 break;
             case 5:
-
+                startActivity(new Intent().setClass(MainActivity.this, ExchangeListActivity.class));
                 break;
             default:
                 break;

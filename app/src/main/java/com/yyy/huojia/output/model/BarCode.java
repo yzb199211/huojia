@@ -28,6 +28,7 @@ public class BarCode {
     private String sProTaskOrderMBillNo;
     private String sStockShortName;
     private int iBscDataMatRecNo;
+    private double fLength;
 
     public int getiBscDataMatRecNo() {
         return iBscDataMatRecNo;
@@ -119,5 +120,13 @@ public class BarCode {
 
     public void setSStockShortName(String sStockShortName) {
         this.sStockShortName = sStockShortName;
+    }
+
+    public double getfLength() {
+        return fLength;
+    }
+
+    public void setfLength(double fLength) {
+        this.fLength = fLength;
     }
 }

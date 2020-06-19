@@ -52,6 +52,7 @@ public class BarCodeAdapter extends RecyclerView.Adapter<BarCodeAdapter.VH> {
         holder.tvMoney.setText("总金额：" + list.get(position).getFTotal());
         holder.tvSupplier.setText(list.get(position).getSStockShortName());
         holder.tvBatch.setText("钢卷号：" + list.get(position).getSBatchNo());
+        holder.tvLength.setText("总长度：" + list.get(position).getfLength());
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -85,6 +86,7 @@ public class BarCodeAdapter extends RecyclerView.Adapter<BarCodeAdapter.VH> {
         private TextView tvMoney;
         private TextView tvSupplier;
         private TextView tvBatch;
+        private TextView tvLength;
 
         public VH(@NonNull View itemView) {
             super(itemView);
@@ -99,6 +101,7 @@ public class BarCodeAdapter extends RecyclerView.Adapter<BarCodeAdapter.VH> {
 
             tvSupplier = itemView.findViewById(R.id.tv_supplier);
             tvBatch = itemView.findViewById(R.id.tv_batch);
+            tvLength = itemView.findViewById(R.id.tv_length);
         }
     }
 }

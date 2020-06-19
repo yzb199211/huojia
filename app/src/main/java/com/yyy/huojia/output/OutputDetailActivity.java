@@ -25,6 +25,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.yyy.huojia.R;
 import com.yyy.huojia.dialog.DeleteDialog;
+import com.yyy.huojia.dialog.EditDialog;
 import com.yyy.huojia.dialog.JudgeDialog;
 import com.yyy.huojia.dialog.LoadingDialog;
 import com.yyy.huojia.interfaces.OnItemClickListener;
@@ -269,7 +270,11 @@ public class OutputDetailActivity extends AppCompatActivity {
         }.getType());
         removeRepeat(list);
     }
-
+    private void initCodeList2(String tables) throws Exception {
+        List<BarCode> list = new Gson().fromJson(tables, new TypeToken<List<BarCode>>() {
+        }.getType());
+        removeRepeat2(list);
+    }
     private void removeRepeat(List<BarCode> list) throws Exception {
         for (int i = 0; i < list.size(); i++) {
             int size = codes.size();
@@ -281,7 +286,17 @@ public class OutputDetailActivity extends AppCompatActivity {
         }
         setRecycle();
     }
-
+    private void removeRepeat2(List<BarCode> list) throws Exception {
+        for (int i = 0; i < list.size(); i++) {
+            int size = codes.size();
+            codes.add(list.get(i).getSBatchNo());
+            if (size < codes.size()) {
+                barCodes.add(0, list.get(i));
+                addSort(list.get(i));
+            }
+        }
+        setRecycle2();
+    }
     private void addSort(BarCode code) {
         boolean isContain = false;
         for (int i = 0; i < sorts.size(); i++) {
@@ -301,26 +316,62 @@ public class OutputDetailActivity extends AppCompatActivity {
                 @Override
                 public void run() {
                     refreshList();
+                    showEditDialog(0);
                     FinishLoading(null);
                 }
             });
         }
     }
-
+    private void setRecycle2() {
+        if (barCodes.size() > 0) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    refreshList();
+                    FinishLoading(null);
+                }
+            });
+        }
+    }
     private void refreshList() {
         if (barCodeAdapter == null) {
             barCodeAdapter = new BarCodeAdapter(this, barCodes);
             barCodeAdapter.setOnItemClickListener(new OnItemClickListener() {
                 @Override
                 public void onItemClick(View view, int position) {
-                    showDeleteDialog(position);
+                    showEditDialog(position);
                 }
             });
+            barCodeAdapter.setOnItemLongClickListener((view, position) -> {
+                showDeleteDialog(position);
+            });
             rvItem.setAdapter(barCodeAdapter);
+
         } else {
             barCodeAdapter.notifyDataSetChanged();
         }
         refreshView();
+    }
+
+    EditDialog editDialog;
+
+    private void showEditDialog(int position) {
+        if (editDialog == null) {
+            editDialog = new EditDialog(this).title("修改" + barCodes.get(position).getSBatchNo() + "实际长度");
+        } else {
+            editDialog.setTitle(("修改" + barCodes.get(position).getSBatchNo() + "实际长度"));
+        }
+        editDialog.setOnCloseListener(new EditDialog.OnCloseListener() {
+            @Override
+            public void onClick(boolean confirm, @NonNull String data) {
+                if (confirm) {
+                    barCodes.get(position).setfLength(Double.parseDouble(data));
+                    barCodeAdapter.notifyItemChanged(position);
+                    refreshView();
+                }
+            }
+        });
+        editDialog.show();
     }
 
     DeleteDialog deleteDialog;
@@ -399,7 +450,7 @@ public class OutputDetailActivity extends AppCompatActivity {
                 try {
                     JSONObject jsonObject = new JSONObject(string);
                     if (jsonObject.optBoolean("success")) {
-                        initCodeList(jsonObject.optJSONArray("tables").optString(0));
+                        initCodeList2(jsonObject.optJSONArray("tables").optString(0));
                         FinishLoading(null);
                     } else {
                         FinishLoading(jsonObject.optString("message"));
@@ -679,9 +730,9 @@ public class OutputDetailActivity extends AppCompatActivity {
         String barcode = "";
         for (int i = 0; i < barCodes.size(); i++) {
             if (i == 0) {
-                barcode = barcode + barCodes.get(i).getSBatchNo();
+                barcode = barcode + barCodes.get(i).getSBatchNo() + ":200";
             } else {
-                barcode = barcode + "," + barCodes.get(i).getSBatchNo();
+                barcode = barcode + "," + barCodes.get(i).getSBatchNo() + ":200";
             }
         }
         return barcode;
@@ -760,7 +811,7 @@ public class OutputDetailActivity extends AppCompatActivity {
                 tvTask.setText(tasks.get(options1).getPickerViewText());
             }
         })
-                .setTitleText("生产任务单")
+                .setTitleText("分条任务单")
                 .setContentTextSize(18)//设置滚轮文字大小
                 .setDividerColor(Color.LTGRAY)//设置分割线的颜色
                 .setSelectOptions(0)//默认选中项
