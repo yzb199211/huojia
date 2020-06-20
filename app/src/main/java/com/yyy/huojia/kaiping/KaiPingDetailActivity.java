@@ -108,9 +108,17 @@ public class KaiPingDetailActivity extends AppCompatActivity {
 
     private void init() {
         initTop();
+        initBottom();
         intiRecycle();
         url = (String) preferencesHelper.getSharedPreference("address", "") + NetConfig.server + NetConfig.PDAHandler_Method;
+        userid = (String) preferencesHelper.getSharedPreference("userid", "");
         initScanCode();
+
+    }
+
+    private void initBottom() {
+        tvSave.setVisibility(View.INVISIBLE);
+        tvDelete.setVisibility(View.INVISIBLE);
     }
 
     private void intiRecycle() {
@@ -155,7 +163,7 @@ public class KaiPingDetailActivity extends AppCompatActivity {
 
     private List<NetParams> getCodeParams(String code) {
         List<NetParams> params = new ArrayList<>();
-        params.add(new NetParams("otype", Otypes.OutBarCode));
+        params.add(new NetParams("otype", Otypes.MMStockOutBarcodeEven));
         params.add(new NetParams("sBarCode", code));
         params.add(new NetParams("iProTaskOrderMRecNo", taskid + ""));
         params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
