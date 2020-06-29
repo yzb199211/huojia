@@ -1,5 +1,7 @@
 package com.yyy.huojia.kaiping;
 
+import java.util.Objects;
+
 public class KaiPingB {
 
     /**
@@ -21,6 +23,13 @@ public class KaiPingB {
     private String sProTaskOrderMBillNo;
     private int iBscDataMatRecNo;
     private int fLength;
+
+    public KaiPingB() {
+    }
+
+    public KaiPingB(String sBatchNo) {
+        this.sBatchNo = sBatchNo;
+    }
 
     public int getIFlag() {
         return iFlag;
@@ -84,5 +93,18 @@ public class KaiPingB {
 
     public void setFLength(int fLength) {
         this.fLength = fLength;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        KaiPingB kaiPingB = (KaiPingB) o;
+        return sBatchNo.equals(kaiPingB.sBatchNo);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(sBatchNo);
     }
 }

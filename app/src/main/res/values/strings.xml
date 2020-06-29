@@ -26,16 +26,16 @@
 
     <string name="title_input">采购入库单</string>
     <string name="title_not_arrived">未到货明细</string>
-    <string name="title_output">物料领用单</string>
+    <string name="title_output">分条单</string>
     <string name="title_check">物料盘点单</string>
 
     <string name="text_red">红冲</string>
 
     <string name="hint_stock">请选择仓库</string>
     <string name="hint_stock_in">请选择出库仓</string>
-    <string name="hint_stock_out">请选择入库存</string>
+    <string name="hint_stock_out">请选择入库仓</string>
     <string name="hint_supplier">请选择供应商</string>
-    <string name="hint_task">请选择生产任务单</string>
+    <string name="hint_task">请选择任务单</string>
     <string name="hint_code">请输入条码</string>
 
     <string name="top_no_arrvied">未到货</string>

@@ -144,7 +144,7 @@ public class ExchangeDetailActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        tvTitle.setText(getString(R.string.title_output));
+        tvTitle.setText("调拨单");
         ivRight.setVisibility(View.GONE);
         tvTotalWeight.setText("总重量：0kg");
         tvTotalMoney.setText("总卷数：0");
@@ -516,7 +516,7 @@ public class ExchangeDetailActivity extends AppCompatActivity {
 
     private boolean canSave() {
         if (stockidIn == 0 || stockidOut == 0) {
-            Toasts.showShort(this, "出库仓和入库存不能为空");
+            Toasts.showShort(this, "出库仓和入库仓不能为空");
             return false;
         }
         return true;
@@ -718,7 +718,7 @@ public class ExchangeDetailActivity extends AppCompatActivity {
                 tvStockIn.setText(stocks.get(options1).getSStockName());
             }
         })
-                .setTitleText("出库仓选择")
+                .setTitleText("入库仓选择")
                 .setContentTextSize(18)//设置滚轮文字大小
                 .setDividerColor(Color.LTGRAY)//设置分割线的颜色
                 .setSelectOptions(0)//默认选中项

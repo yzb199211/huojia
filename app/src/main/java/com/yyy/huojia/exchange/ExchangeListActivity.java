@@ -80,7 +80,7 @@ public class ExchangeListActivity extends AppCompatActivity {
     }
 
     private void initView() {
-        tvTitle.setText(getString(R.string.title_output));
+        tvTitle.setText("调拨单");
         initRecycle();
     }
 

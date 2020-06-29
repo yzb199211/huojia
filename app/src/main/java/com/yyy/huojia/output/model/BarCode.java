@@ -122,8 +122,8 @@ public class BarCode {
         this.sStockShortName = sStockShortName;
     }
 
-    public double getfLength() {
-        return fLength;
+    public int getfLength() {
+        return new Double(fLength).intValue();
     }
 
     public void setfLength(double fLength) {

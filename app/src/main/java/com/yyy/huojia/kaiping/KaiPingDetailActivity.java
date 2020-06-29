@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -28,8 +29,6 @@ import com.yyy.huojia.dialog.LoadingDialog;
 import com.yyy.huojia.interfaces.ResponseListener;
 import com.yyy.huojia.model.Stock;
 import com.yyy.huojia.model.TaskOrder;
-import com.yyy.huojia.output.OutputDetailActivity;
-import com.yyy.huojia.util.ResultCode;
 import com.yyy.huojia.util.SharedPreferencesHelper;
 import com.yyy.huojia.util.StringUtil;
 import com.yyy.huojia.util.Toasts;
@@ -79,16 +78,17 @@ public class KaiPingDetailActivity extends AppCompatActivity {
     TextView tvSave;
     @BindView(R.id.tv_submit)
     TextView tvSubmit;
+    @BindView(R.id.ll_products)
+    LinearLayout llProducts;
 
     List<Stock> stocks = new ArrayList<>();
     List<TaskOrder> tasks = new ArrayList<>();
     List<KaiPingDetailB> detailBS = new ArrayList<>();
-    KaiPingB kaiPingB;
+    List<KaiPingB> barcoders = new ArrayList<>();
     private OptionsPickerView pvStock;
     private OptionsPickerView pvTask;
-    private KaiPingAdapter adapter;
-
-    int RecNo;
+    //    private KaiPingAdapter adapter;
+    private KaiPingAdapter2 adapter;
     int stockid;
     int taskid;
 
@@ -131,8 +131,8 @@ public class KaiPingDetailActivity extends AppCompatActivity {
         tvTitle.setText("开平单");
     }
 
-    private KaiPingAdapter getAdapter() {
-        adapter = new KaiPingAdapter(this, detailBS);
+    private KaiPingAdapter2 getAdapter() {
+        adapter = new KaiPingAdapter2(this, barcoders);
         return adapter;
     }
 
@@ -144,7 +144,8 @@ public class KaiPingDetailActivity extends AppCompatActivity {
                 Log.e("code", event.getScanCode() + "");
                 if ((keyCode == KeyEvent.KEYCODE_ENTER || event.getScanCode() == 148) && event.getAction() == KeyEvent.ACTION_UP) {
                     clear();
-                    getCodeData(etCode.getText().toString());
+                    if (!barcoders.contains(new KaiPingB(etCode.getText().toString())))
+                        getCodeData(etCode.getText().toString());
                     etCode.setText("");
                 }
                 return false;
@@ -155,10 +156,10 @@ public class KaiPingDetailActivity extends AppCompatActivity {
 
     private void clear() {
         detailBS.clear();
-        kaiPingB = null;
         tvName.setText("");
         tvWeight.setText("");
         adapter.notifyDataSetChanged();
+
     }
 
     private List<NetParams> getCodeParams(String code) {
@@ -187,8 +188,9 @@ public class KaiPingDetailActivity extends AppCompatActivity {
                     JSONObject jsonObject = new JSONObject(string);
                     if (jsonObject.optBoolean("success")) {
                         initMain((jsonObject.optJSONObject("tables").optJSONArray("Main").optString(0)));
-                        initCodeList(jsonObject.optJSONObject("tables").optString("Detail"));
-                        KaiPingDetailActivity.this.code = code;
+                        if (barcoders.size() == 1)
+                            initCodeList(jsonObject.optJSONObject("tables").optString("Detail"));
+//                        KaiPingDetailActivity.this.code = code;
                         FinishLoading(null);
                     } else {
                         FinishLoading(jsonObject.optString("message"));
@@ -211,20 +213,11 @@ public class KaiPingDetailActivity extends AppCompatActivity {
     }
 
     private void initMain(String optString) throws Exception {
-        kaiPingB = new Gson().fromJson(optString, KaiPingB.class);
-        setMain();
+        KaiPingB kaiPingB = new Gson().fromJson(optString, KaiPingB.class);
+        barcoders.set(0, kaiPingB);
+        refreshList();
     }
 
-    private void setMain() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                tvName.setText(kaiPingB.getSName());
-                tvWeight.setText("总长度：" + kaiPingB.getFLength());
-            }
-        });
-
-    }
 
     private void initCodeList(String optString) throws Exception {
         detailBS.addAll(new Gson().fromJson(optString, new TypeToken<List<KaiPingDetailB>>() {
@@ -232,10 +225,20 @@ public class KaiPingDetailActivity extends AppCompatActivity {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                adapter.notifyDataSetChanged();
+                setProducts();
             }
         });
+    }
 
+    private void setProducts() {
+        for (KaiPingDetailB item : detailBS) {
+            View view = View.inflate(this, R.layout.item_kaiping, null);
+            TextView tvName = view.findViewById(R.id.tv_name);
+            TextView tvQty = view.findViewById(R.id.tv_qty);
+            tvName.setText(item.getSElements());
+            tvQty.setText("数量：" + item.getIQty());
+            llProducts.addView(view);
+        }
     }
 
     @OnClick({R.id.iv_back, R.id.tv_stock, R.id.tv_task, R.id.tv_submit})
@@ -278,7 +281,7 @@ public class KaiPingDetailActivity extends AppCompatActivity {
         params.add(new NetParams("iBscDataStockMRecNo", stockid + ""));
         params.add(new NetParams("iProTaskOrderMRecNo", taskid + ""));
         params.add(new NetParams("sUserID", userid));
-        params.add(new NetParams("sBarCodes", code));
+        params.add(new NetParams("sBarCode", code));
         return params;
     }
 
@@ -297,6 +300,7 @@ public class KaiPingDetailActivity extends AppCompatActivity {
 //                                Toasts.showShort(KaiPingDetailActivity.this, "保存成功");
                                 FinishLoading("保存成功");
                                 clear();
+                                clearTask();
                             }
                         });
                     } else {
@@ -317,6 +321,12 @@ public class KaiPingDetailActivity extends AppCompatActivity {
                 FinishLoading(e.getMessage());
             }
         });
+    }
+
+    private void clearTask() {
+        tasks.clear();
+        taskid = 0;
+        tvTask.setText("");
     }
 
     private boolean canSave() {
@@ -540,6 +550,15 @@ public class KaiPingDetailActivity extends AppCompatActivity {
                 if (StringUtil.isNotEmpty(msg)) {
                     Toasts.showShort(KaiPingDetailActivity.this, msg);
                 }
+            }
+        });
+    }
+
+    private void refreshList() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                adapter.notifyDataSetChanged();
             }
         });
     }

@@ -358,9 +358,11 @@ public class OutputDetailActivity extends AppCompatActivity {
     private void showEditDialog(int position) {
         if (editDialog == null) {
             editDialog = new EditDialog(this).title("修改" + barCodes.get(position).getSBatchNo() + "实际长度");
+            editDialog.setNegativeVis(false);
         } else {
             editDialog.setTitle(("修改" + barCodes.get(position).getSBatchNo() + "实际长度"));
         }
+        editDialog.setMax(barCodes.get(position).getfLength());
         editDialog.setOnCloseListener(new EditDialog.OnCloseListener() {
             @Override
             public void onClick(boolean confirm, @NonNull String data) {
@@ -730,9 +732,9 @@ public class OutputDetailActivity extends AppCompatActivity {
         String barcode = "";
         for (int i = 0; i < barCodes.size(); i++) {
             if (i == 0) {
-                barcode = barcode + barCodes.get(i).getSBatchNo() + ":200";
+                barcode = barcode + barCodes.get(i).getSBatchNo() + ":"+barCodes.get(i).getfLength();
             } else {
-                barcode = barcode + "," + barCodes.get(i).getSBatchNo() + ":200";
+                barcode = barcode + "," + barCodes.get(i).getSBatchNo() + ":"+ barCodes.get(i).getfLength();
             }
         }
         return barcode;

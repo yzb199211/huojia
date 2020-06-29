@@ -3,6 +3,7 @@ package com.yyy.huojia.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 
 import com.yyy.huojia.R;
 import com.yyy.huojia.util.StringUtil;
+import com.yyy.huojia.util.Toasts;
 
 
 public class EditDialog extends Dialog implements View.OnClickListener {
@@ -24,6 +26,8 @@ public class EditDialog extends Dialog implements View.OnClickListener {
     private EditText etContent;
     private TextView tvCancle;
     private TextView tvSubmit;
+    private View line;
+    private boolean showCancle;
     OnCloseListener onCloseListener;
 
     public interface OnCloseListener {
@@ -88,30 +92,39 @@ public class EditDialog extends Dialog implements View.OnClickListener {
         etContent = findViewById(R.id.et_content);
         tvCancle = findViewById(R.id.tv_cancel);
         tvSubmit = findViewById(R.id.tv_submit);
-
-        etContent.setText(String.valueOf(max) + "");
+        line = findViewById(R.id.line);
+        etContent.setText(max == 0 ? "" : max + "");
         if (StringUtil.isNotEmpty(title))
             tvTitle.setText(title);
         if (StringUtil.isNotEmpty(positiveName))
             tvSubmit.setText(positiveName);
         if (StringUtil.isNotEmpty(negativeName))
             tvCancle.setText(negativeName);
+
+        tvCancle.setVisibility(showCancle ? View.VISIBLE : View.GONE);
+        line.setVisibility(showCancle ? View.VISIBLE : View.GONE);
         tvCancle.setOnClickListener(this);
         tvSubmit.setOnClickListener(this);
     }
 
     @Override
     public void onClick(View v) {
-        this.dismiss();
+
         switch (v.getId()) {
             case R.id.tv_cancel:
 //                hintKeyBoard(context);
+                this.dismiss();
                 if (onCloseListener != null) {
                     onCloseListener.onClick(false, null);
                 }
                 break;
             case R.id.tv_submit:
 //                hintKeyBoard(context);
+                if (TextUtils.isEmpty(etContent.getText().toString())) {
+                    Toasts.showShort(context, "输入值不能为空");
+                    break;
+                }
+                this.dismiss();
                 if (onCloseListener != null) {
                     onCloseListener.onClick(true, etContent.getText().toString());
                 }
@@ -160,7 +173,14 @@ public class EditDialog extends Dialog implements View.OnClickListener {
 
     public void setMax(int max) {
         this.max = max;
-        etContent.setText(max + "");
+        if (etContent != null)
+            etContent.setText(max == 0 ? "" : max + "");
+    }
+
+    public void setNegativeVis(boolean b) {
+        this.showCancle = b;
+//        tvCancle.setVisibility(b ? View.VISIBLE : View.GONE);
+//        line.setVisibility(b ? View.VISIBLE : View.GONE);
     }
 
     /**
