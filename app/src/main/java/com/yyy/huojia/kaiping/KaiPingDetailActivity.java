@@ -214,7 +214,10 @@ public class KaiPingDetailActivity extends AppCompatActivity {
 
     private void initMain(String optString) throws Exception {
         KaiPingB kaiPingB = new Gson().fromJson(optString, KaiPingB.class);
-        barcoders.set(0, kaiPingB);
+        if (barcoders.size() > 0)
+            barcoders.set(0, kaiPingB);
+        else
+            barcoders.add(0, kaiPingB);
         refreshList();
     }
 

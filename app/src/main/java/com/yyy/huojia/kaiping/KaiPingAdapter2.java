@@ -25,7 +25,7 @@ public class KaiPingAdapter2 extends RecyclerView.Adapter<KaiPingAdapter2.VH> {
     @NonNull
     @Override
     public VH onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item_kaiping, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_kaiping_code, parent, false);
         return new VH(view);
     }
 
